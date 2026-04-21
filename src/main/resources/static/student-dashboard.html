@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management | My Room</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+        <div class="container">
+            <span class="navbar-brand fw-bold">
+                <i class="fas fa-hotel me-2"></i> HOSTEL-APP
+            </span>
+            <div class="ms-auto d-flex align-items-center gap-2">
+                <ul class="navbar-nav me-3 d-none d-lg-flex">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="navDashboard"><i class="fas fa-th-large me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="navProfile"><i class="fas fa-user me-1"></i> My Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="navHelp"><i class="fas fa-question-circle me-1"></i> Help</a>
+                    </li>
+                </ul>
+                <span class="text-white-50 small d-none d-md-inline">Student</span>
+                <span class="badge bg-light text-primary px-3 py-2 rounded-pill">
+                    <i class="fas fa-user-circle me-1"></i> <span id="userName">Student</span>
+                </span>
+                <a class="btn btn-outline-light btn-sm rounded-pill px-3" href="index.html" id="logoutBtnStudent">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white border-bottom py-4 mb-4">
+        <div class="container">
+            <h1 class="h4 fw-bold mb-0 text-dark">My hostel</h1>
+            <div id="connectionStatus" class="d-inline-block mt-2 small">
+                <span class="badge bg-secondary rounded-pill px-3"><i class="fas fa-spinner fa-spin me-1"></i> Checking...</span>
+            </div>
+            <p class="text-muted small mb-0 mt-2">You can view your allotted room details here.</p>
+        </div>
+    </header>
+
+    <main class="container mb-5 pb-5">
+        <!-- Dashboard Section -->
+        <div id="dashboardSection">
+            <!-- Error Message for Unlinked Profile -->
+            <div id="unlinkedProfileAlert" class="alert alert-danger d-none rounded-4 border-0 shadow-sm p-4 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                    <div>
+                        <h5 class="fw-bold mb-1">Student Profile Not Linked</h5>
+                        <p class="mb-0">Please contact admin to link your student profile to your user account.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-body p-5 text-center">
+                            <div class="bg-primary bg-opacity-10 text-primary p-4 rounded-circle d-inline-block mb-4">
+                                <i class="fas fa-door-open fa-3x"></i>
+                            </div>
+                            <h2 class="h5 fw-bold text-muted text-uppercase small mb-2">My Allotted room</h2>
+                            <p class="display-6 fw-bold text-dark mb-1" id="studentRoomNumber">—</p>
+                            <p class="text-muted mb-0" id="studentBlockLine">Block —</p>
+                            <p class="small text-secondary mt-3 mb-0" id="studentRoomHint"></p>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card-header bg-white border-0 p-4 pb-0">
+                            <h5 class="fw-bold mb-0">My Requests</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Room</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myRequestsTable">
+                                        <!-- Dynamic content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100" id="availableRoomsCard">
+                        <div class="card-header bg-white border-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0">Available Rooms</h5>
+                            <button class="btn btn-sm btn-outline-primary rounded-pill" id="requestAnyRoomBtn">Request Any Room</button>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="ps-3">Room No</th>
+                                            <th>Block</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th class="text-end pe-3">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="availableRoomsTable">
+                                        <!-- Dynamic content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" class="d-none">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center p-4">
+                        <div class="position-relative d-inline-block mx-auto mb-4">
+                            <img id="profileImage" src="https://ui-avatars.com/api/?name=Student&background=random" alt="Profile" class="rounded-circle border border-4 border-white shadow-sm" style="width: 150px; height: 150px; object-fit: cover;">
+                            <label for="profileImageInput" class="btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0 p-2 shadow">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="profileImageInput" class="d-none" accept="image/*">
+                        </div>
+                        <h4 id="profileName" class="fw-bold mb-1">Student Name</h4>
+                        <p id="profileEmail" class="text-muted mb-3">student@example.com</p>
+                        <div class="d-grid">
+                            <button class="btn btn-outline-primary rounded-pill" id="editProfileBtn">
+                                <i class="fas fa-edit me-2"></i> Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <h5 class="fw-bold mb-4 border-bottom pb-2">Profile Information</h5>
+                        <div id="profileViewMode">
+                            <div class="row mb-3">
+                                <div class="col-sm-4 text-muted">Contact Number</div>
+                                <div class="col-sm-8 fw-bold" id="viewContact">—</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4 text-muted">Father's Contact</div>
+                                <div class="col-sm-8 fw-bold" id="viewFatherContact">—</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4 text-muted">Category</div>
+                                <div class="col-sm-8 fw-bold" id="viewCategory">General</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4 text-muted">City</div>
+                                <div class="col-sm-8 fw-bold" id="viewCity">—</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4 text-muted">Address</div>
+                                <div class="col-sm-8 fw-bold" id="viewAddress">—</div>
+                            </div>
+                        </div>
+                        
+                        <form id="profileEditForm" class="d-none">
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label text-muted">Contact Number</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control rounded-3" name="contact" id="editContact">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label text-muted">Father's Contact</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control rounded-3" name="fatherContact" id="editFatherContact">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label text-muted">Category</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select rounded-3" name="category" id="editCategory">
+                                        <option value="General">General</option>
+                                        <option value="OBC">OBC</option>
+                                        <option value="SC">SC</option>
+                                        <option value="ST">ST</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label text-muted">City</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control rounded-3" name="city" id="editCity">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label text-muted">Address</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control rounded-3" name="address" id="editAddress" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-light rounded-pill px-4 me-2" id="cancelEditBtn">Cancel</button>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div id="helpSection" class="d-none">
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <h5 class="fw-bold mb-4 border-bottom pb-2">Frequently Asked Questions</h5>
+                        <div class="accordion accordion-flush" id="helpAccordion">
+                            <div class="accordion-item border-0 mb-2">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed rounded-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        How do I request a room?
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body text-muted">
+                                        Navigate to your dashboard, and if you don't have a room yet, you'll see a list of available rooms. Click the "Request" button on your preferred room.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item border-0 mb-2">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed rounded-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        Can I change my room request?
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body text-muted">
+                                        Once a request is pending, you cannot send another one until it is approved or rejected by the admin.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item border-0 mb-2">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed rounded-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        How is attendance recorded?
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body text-muted">
+                                        Hostel wardens take daily attendance. You can check your status with the administration if needed.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-primary text-white">
+                        <h5 class="fw-bold mb-3"><i class="fas fa-headset me-2"></i> Support Center</h5>
+                        <p class="small mb-4">Have questions or need assistance? Our support team is here to help you.</p>
+                        <div class="mb-3">
+                            <p class="mb-1 small opacity-75">Support Hotline</p>
+                            <h5 class="fw-bold">+91 98765 43210</h5>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1 small opacity-75">Email Support</p>
+                            <h6 class="fw-bold">support@hostelapp.com</h6>
+                        </div>
+                        <div class="mt-4">
+                            <p class="small mb-0">Available: Mon-Sat (9 AM - 6 PM)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">&copy; 2026 Hostel Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js?v=4"></script>
+</body>
+</html>

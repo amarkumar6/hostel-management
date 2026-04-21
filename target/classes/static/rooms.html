@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management | Vacant Rooms</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="dashboard.html">
+                <i class="fas fa-hotel me-2"></i> HOSTEL-APP
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="dashboard.html"><i class="fas fa-chart-line me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="students.html"><i class="fas fa-user-graduate me-1"></i> Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="attendance.html"><i class="fas fa-calendar-check me-1"></i> Attendance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-semibold" href="rooms.html"><i class="fas fa-door-open me-1"></i> Vacant Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="allotment.html"><i class="fas fa-key me-1"></i> Allotment</a>
+                    </li>
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle bg-white text-primary px-3 py-2 rounded-pill shadow-sm" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> <span id="userName">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2 rounded-3">
+                            <li><a class="dropdown-item py-2" href="#"><i class="fas fa-user-edit me-2"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2 text-danger" href="index.html" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white border-bottom py-4 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="h3 fw-bold mb-0 text-dark">Vacant Rooms</h1>
+                    <div id="connectionStatus" class="d-inline-block mt-2 small">
+                        <span class="badge bg-secondary rounded-pill px-3"><i class="fas fa-spinner fa-spin me-1"></i> Checking...</span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <button class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+                        <i class="fas fa-plus-circle me-2"></i> Add New Room
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mb-5">
+        <div class="card border-0 shadow-sm rounded-4 bg-white">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="py-3 ps-4 border-0 rounded-start">Room Number</th>
+                                <th class="py-3 border-0">Hostel Block</th>
+                                <th class="py-3 border-0">Type</th>
+                                <th class="py-3 border-0">Capacity</th>
+                                <th class="py-3 border-0">Occupancy</th>
+                                <th class="py-3 border-0">Status</th>
+                                <th class="py-3 pe-4 border-0 rounded-end text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roomsList">
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <i class="fas fa-spinner fa-spin me-2"></i> Loading rooms...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Room Modal -->
+    <div class="modal fade" id="addRoomModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold">Add New Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="addRoomForm">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Room Number</label>
+                                <input type="text" name="roomNumber" class="form-control rounded-3 bg-light border-0 py-2" placeholder="e.g. 101" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Hostel Block</label>
+                                <select name="hostelBlock" class="form-select rounded-3 bg-light border-0 py-2" required>
+                                    <option value="Block A">Block A</option>
+                                    <option value="Block B">Block B</option>
+                                    <option value="Block C">Block C</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Room Type</label>
+                                <select name="type" class="form-select rounded-3 bg-light border-0 py-2" required>
+                                    <option value="Single">Single</option>
+                                    <option value="Double">Double</option>
+                                    <option value="Triple">Triple</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Capacity</label>
+                                <input type="number" name="capacity" class="form-control rounded-3 bg-light border-0 py-2" min="1" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Floor</label>
+                                <input type="number" name="floor" class="form-control rounded-3 bg-light border-0 py-2" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Save Room</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Allot student to room (opened from vacant room row) -->
+    <div class="modal fade" id="allotFromRoomModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold">Allot room to student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="allotFromRoomForm">
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="allotFromRoomRoomId" name="roomId" value="">
+                        <p class="text-muted mb-3">Room <span class="fw-bold text-dark" id="allotFromRoomLabel"></span></p>
+                        <label class="form-label fw-semibold">Select student</label>
+                        <select id="allotFromRoomStudentSelect" class="form-select rounded-3 bg-light border-0 py-2" required>
+                            <option value="">Choose student...</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Confirm allotment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">&copy; 2026 Hostel Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js?v=4"></script>
+</body>
+</html>

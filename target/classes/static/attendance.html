@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management | Attendance</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="dashboard.html">
+                <i class="fas fa-hotel me-2"></i> HOSTEL-APP
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="dashboard.html"><i class="fas fa-chart-line me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="students.html"><i class="fas fa-user-graduate me-1"></i> Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-semibold" href="attendance.html"><i class="fas fa-calendar-check me-1"></i> Attendance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="rooms.html"><i class="fas fa-door-open me-1"></i> Vacant Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="allotment.html"><i class="fas fa-key me-1"></i> Allotment</a>
+                    </li>
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle bg-white text-primary px-3 py-2 rounded-pill shadow-sm" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> <span id="userName">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2 rounded-3">
+                            <li><a class="dropdown-item py-2" href="#"><i class="fas fa-user-edit me-2"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2 text-danger" href="index.html" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-white border-bottom py-4 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="h3 fw-bold mb-0 text-dark">Daily Attendance</h1>
+                    <div id="connectionStatus" class="d-inline-block mt-2 small">
+                        <span class="badge bg-secondary rounded-pill px-3"><i class="fas fa-spinner fa-spin me-1"></i> Checking...</span>
+                    </div>
+                    <p class="text-muted mb-0">Record and manage daily presence of students.</p>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <button id="exportReportBtn" class="btn btn-outline-primary rounded-pill px-4 me-2">
+                        <i class="fas fa-file-csv me-2"></i> Export CSV
+                    </button>
+                    <div class="d-inline-flex align-items-center bg-light border p-2 rounded-pill">
+                        <span class="px-3 fw-bold text-primary"><i class="fas fa-calendar-day me-2"></i> Today: <span id="currentDateDisplay">...</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mb-5">
+        <div class="row g-4">
+            <!-- Filter Section -->
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm rounded-4 bg-white mb-4">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Select Block</label>
+                                <select id="blockFilter" class="form-select rounded-pill bg-light border-0 py-2 shadow-none">
+                                    <option value="All Blocks">All Blocks</option>
+                                    <option value="Block A">Block A</option>
+                                    <option value="Block B">Block B</option>
+                                    <option value="Block C">Block C</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Select Room</label>
+                                <select id="roomFilter" class="form-select rounded-pill bg-light border-0 py-2 shadow-none">
+                                    <option value="All Rooms">All Rooms</option>
+                                    <option value="Room 101">Room 101</option>
+                                    <option value="Room 102">Room 102</option>
+                                    <option value="Room 103">Room 103</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Date</label>
+                                <input type="date" class="form-control rounded-pill bg-light border-0 py-2 shadow-none" id="attendanceDate">
+                            </div>
+                            <div class="col-md-2">
+                                <button id="applyAttendanceFilters" class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm">
+                                    <i class="fas fa-filter me-2"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Table -->
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+                    <div class="card-header bg-white border-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">Student Attendance Status</h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold" id="markAllPresent">
+                                <i class="fas fa-check-double me-1"></i> Mark All Present
+                            </button>
+                            <button class="btn btn-sm btn-success rounded-pill px-4 fw-bold shadow-sm" id="saveAttendance">
+                                <i class="fas fa-save me-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="py-3 ps-4 border-0 rounded-start">Student Name</th>
+                                        <th class="py-3 border-0">Room/Block</th>
+                                        <th class="py-3 border-0 text-center">Status</th>
+                                        <th class="py-3 pe-4 border-0 rounded-end text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceTableBody">
+                                    <!-- Rows populated by app.js -->
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5 text-muted">
+                                            <i class="fas fa-spinner fa-spin me-2"></i> Loading attendance records...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">&copy; 2026 Hostel Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js?v=4"></script>
+</body>
+</html>
