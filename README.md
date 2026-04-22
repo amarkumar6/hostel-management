@@ -4,6 +4,13 @@ A unified, full-stack Hostel Management System built with **Java Spring Boot**, 
 
 ---
 
+## 🚀 Live Demo
+
+👉 Click here to open the project:  
+https://hostel-management-production-f2e2.up.railway.app/
+
+---
+
 ## 🏗️ Project Architecture
 
 ```mermaid
@@ -93,7 +100,7 @@ mvn spring-boot:run
 ## 🔐 Default Admin Credentials
 The system automatically seeds an administrator account on first startup:
 - **Email**: `admin@example.com`
-- **Password**: `password123`
+- **Password**: `passwordxxx`
 
 ---
 
